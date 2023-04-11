@@ -14,6 +14,10 @@ var colorInput = document.getElementById("color");
 var amplitudeValue = document.getElementById("amplitudeValue");
 var frequencyValue = document.getElementById("frequencyValue");
 
+// Set up animation variables
+var animationId;
+var phase = 0;
+
 // Update the wave properties when the input values change
 amplitudeInput.addEventListener("input", function() {
   amplitudeValue.textContent = this.value;
@@ -29,7 +33,10 @@ colorInput.addEventListener("input", function() {
   drawWave();
 });
 
-// Draw the wave with the current properties
+// Start the animation when the page loads
+window.addEventListener("load", startAnimation);
+
+// Draw the wave with the current properties and phase
 function drawWave() {
   var amplitude = amplitudeInput.value;
   var frequency = frequencyInput.value;
@@ -40,7 +47,7 @@ function drawWave() {
   context.beginPath();
   context.strokeStyle = color;
   for (var x = 0; x <= canvas.width; x++) {
-    var y = canvas.height / 2 + amplitude * Math.sin(frequency * x * 2 * Math.PI / canvas.width);
+    var y = canvas.height / 2 + amplitude * Math.sin(frequency * (x + phase) * 2 * Math.PI / canvas.width);
     if (x == 0) {
       context.moveTo(x, y);
     } else {
@@ -48,6 +55,23 @@ function drawWave() {
     }
   }
   context.stroke();
+}
+
+// Start the animation loop
+function startAnimation() {
+  animationId = requestAnimationFrame(animationLoop);
+}
+
+// Stop the animation loop
+function stopAnimation() {
+  cancelAnimationFrame(animationId);
+}
+
+// Animation loop
+function animationLoop() {
+  phase -= 0.1;
+  drawWave();
+  animationId = requestAnimationFrame(animationLoop);
 }
 
 // Call the drawWave function to draw the initial wave
