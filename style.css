@@ -1,7 +1,26 @@
-canvas {
-    border: 1px solid black;
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
   }
-  .input {
+  
+  h1 {
+    text-align: center;
+  }
+  
+  .input-container {
+    display: flex;
+    align-items: center;
     margin: 10px;
+  }
+  
+  label {
+    margin-right: 10px;
+  }
+  
+  canvas {
+    display: block;
+    margin: 0 auto;
+    border: 1px solid black;
   }
   

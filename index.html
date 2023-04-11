@@ -6,21 +6,24 @@
   </head>
   <body>
     <h1>Wave Generator</h1>
-    <div class="input">
-      <label for="amplitude">Amplitude:</label>
-      <input type="range" id="amplitude" min="0" max="100" value="50">
-      <span id="amplitudeValue">50</span>
+    
+    <div class="input-container">
+      <label for="frequency-input">Frequency (Hz):</label>
+      <input type="number" id="frequency-input" value="10" min="1" max="1000">
     </div>
-    <div class="input">
-      <label for="frequency">Frequency:</label>
-      <input type="range" id="frequency" min="1" max="10" value="1">
-      <span id="frequencyValue">1</span>
+    
+    <div class="input-container">
+      <label for="amplitude-input">Amplitude:</label>
+      <input type="number" id="amplitude-input" value="50" min="0" max="100">
     </div>
-    <div class="input">
-      <label for="color">Color:</label>
-      <input type="color" id="color" value="#ff0000">
+    
+    <div class="input-container">
+      <label for="speed-input">Speed:</label>
+      <input type="number" id="speed-input" value="1" min="1" max="10">
     </div>
-    <canvas id="waveCanvas"></canvas>
+    
+    <canvas id="wave-canvas"></canvas>
+    
     <script src="script.js"></script>
   </body>
 </html>

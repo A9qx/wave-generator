@@ -1,78 +1,55 @@
-// Get the canvas element and its context
-var canvas = document.getElementById("waveCanvas");
-var context = canvas.getContext("2d");
+const canvas = document.getElementById("wave-canvas");
+const ctx = canvas.getContext("2d");
 
-// Set the canvas dimensions
-canvas.width = 400;
-canvas.height = 200;
+const frequencyInput = document.getElementById("frequency-input");
+const amplitudeInput = document.getElementById("amplitude-input");
+const speedInput = document.getElementById("speed-input");
 
-// Get the input elements and their values
-var amplitudeInput = document.getElementById("amplitude");
-var frequencyInput = document.getElementById("frequency");
-var colorInput = document.getElementById("color");
+let frequency = parseInt(frequencyInput.value);
+let amplitude = parseInt(amplitudeInput.value);
+let speed = parseInt(speedInput.value);
 
-var amplitudeValue = document.getElementById("amplitudeValue");
-var frequencyValue = document.getElementById("frequencyValue");
+let xOffset = 0;
 
-// Set up animation variables
-var animationId;
-var phase = 0;
-
-// Update the wave properties when the input values change
-amplitudeInput.addEventListener("input", function() {
-  amplitudeValue.textContent = this.value;
-  drawWave();
-});
-
-frequencyInput.addEventListener("input", function() {
-  frequencyValue.textContent = this.value;
-  drawWave();
-});
-
-colorInput.addEventListener("input", function() {
-  drawWave();
-});
-
-// Start the animation when the page loads
-window.addEventListener("load", startAnimation);
-
-// Draw the wave with the current properties and phase
 function drawWave() {
-  var amplitude = amplitudeInput.value;
-  var frequency = frequencyInput.value;
-  var color = colorInput.value;
-  
-  context.clearRect(0, 0, canvas.width, canvas.height);
-  
-  context.beginPath();
-  context.strokeStyle = color;
-  for (var x = 0; x <= canvas.width; x++) {
-    var y = canvas.height / 2 + amplitude * Math.sin(frequency * (x + phase) * 2 * Math.PI / canvas.width);
-    if (x == 0) {
-      context.moveTo(x, y);
-    } else {
-      context.lineTo(x, y);
-    }
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight / 2;
+
+  const centerY = canvas.height / 2;
+  let angle = 0;
+
+  ctx.beginPath();
+  ctx.moveTo(0, centerY);
+
+  for (let x = 0; x < canvas.width; x++) {
+    const y = centerY + Math.sin(angle + xOffset) * amplitude;
+    ctx.lineTo(x, y);
+    angle += (Math.PI * 2 * frequency) / canvas.width;
   }
-  context.stroke();
+
+  ctx.strokeStyle = "blue";
+  ctx.stroke();
+
+  xOffset += speed;
+  requestAnimationFrame(drawWave);
 }
 
-// Start the animation loop
-function startAnimation() {
-  animationId = requestAnimationFrame(animationLoop);
+function updateValues() {
+  frequency = parseInt(frequencyInput.value);
+  amplitude = parseInt(amplitudeInput.value);
+  speed = parseInt(speedInput.value);
 }
 
-// Stop the animation loop
-function stopAnimation() {
-  cancelAnimationFrame(animationId);
-}
+frequencyInput.addEventListener("input", () => {
+  updateValues();
+});
 
-// Animation loop
-function animationLoop() {
-  phase -= 0.1;
-  drawWave();
-  animationId = requestAnimationFrame(animationLoop);
-}
+amplitudeInput.addEventListener("input", () => {
+  updateValues();
+});
 
-// Call the drawWave function to draw the initial wave
+speedInput.addEventListener("input", () => {
+  updateValues();
+});
+
 drawWave();
